@@ -6,7 +6,8 @@ Este repositório contém o conjunto de código necessário à implementação d
 
 Para a geração do QRCode foi usada a biblioteca [PHP QRCode](http://phpqrcode.sourceforge.net/). O conteúdo da biblioteca está no diretório `phpqrcode`.
 
-## Introdução
+## Introdução ao código do PIX
+
 Conforme o [manual de implementação do BR Code](https://www.bcb.gov.br/content/estabilidadefinanceira/SiteAssets/Manual%20do%20BR%20Code.pdf) o Pix adota a representação de dados estruturados de pagamento proposta no padrão
 EMV®1.
 
@@ -70,9 +71,31 @@ O segundo é `013642a57095-84f3-4a42-b9fb-d08935c86f47`:
 
 Se você está apreciando o conteúdo deste trabalho, sinta-se livre para fazer qualquer doação para a chave `42a57095-84f3-4a42-b9fb-d08935c86f47` :)
 
-## Testes
+## Implementação
 
-Esta implementação foi testada, realizando a leitura do QRCode gerado nos aplicativos dos seguintes bancos:
+Esta implementação foi feita através do uso de pequenas funções simples, de maneira estruturada sem classes e objetos buscando atingir o maior número de pessoas.
+
+Para gerar a linha do pix copia e cola, coloque os valores desejados em cada campo em um vetor qualquer onde o índice é o código ID do EVP. Caso o campo tenha filhos basta incluir mais uma dimensão no vetor. Passe o vetor como parâmetro para a função `montaPix`.
+
+A função irá retornar a linha digitável do pix semi-completa, faltando apenas o campo do CRC que deve ser adicionado no campo 63 possuindo o tamanho de 4 bytes. Dessa forma o código 6304 deve estar inserido na função para cálculo do CRC `crcChecksum`.
+
+Exemplo:
+
+```php
+<?php
+$pix=montaPix($px);
+$pix.="6304";
+$pix.=crcChecksum($pix);
+?>
+```
+
+Após gerada a linha do pix copia e cola ela pode ser encaminhada para o pagador (whatsapp, e-mail) ou enviada para o gerador de qrcode.
+
+No arquivo `exemplo.php` há um exemplo mais completo e com comentários a cerca de alguns dos campos possíveis. Para informações mais completas dos campos consulte a documentação oficial do [Bacen](https://bcb.gov.br).
+
+## Testes realizados
+
+Esta implementação foi testada, realizando a leitura do QRCode gerado, nos aplicativos dos seguintes bancos:
 
 * Banco Inter;
 * Bradesco;
@@ -89,3 +112,7 @@ Esta implementação foi testada, realizando a leitura do QRCode gerado nos apli
 * PagBank;
 * AgiBank;
 * Digio.
+
+## Autor
+
+Desenvolvido em 2020 por [Renato Monteiro Batista](https://renato.ovh).
