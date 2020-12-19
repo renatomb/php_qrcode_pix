@@ -93,6 +93,16 @@ Após gerada a linha do pix copia e cola ela pode ser encaminhada para o pagador
 
 No arquivo `exemplo.php` há um exemplo mais completo e com comentários a cerca de alguns dos campos possíveis. Para informações mais completas dos campos consulte a documentação oficial do [Bacen](https://bcb.gov.br).
 
+## Nota sobre o uso de chaves EVP
+
+As chaves aleatórias (Endereço Virtual de Pagamento - EVP) diferenciam letras maiúsculas de minúsculas.
+
+## Nota sobre o uso do identificador
+
+### Itaú
+
+Nos testes foi observado que o itaú só aceita receber o pix se o identificador, valor e descrição existentes no qrcode forem os mesmos previamente cadastrados no sistema deles. Não foi encontrada nenhuma documentação pública a cerca de alguma API para efetuar esse cadastro.
+
 ## Testes realizados
 
 Esta implementação foi testada, realizando a leitura do QRCode gerado, nos aplicativos dos seguintes bancos:
