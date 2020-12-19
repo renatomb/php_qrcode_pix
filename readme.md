@@ -103,6 +103,17 @@ As chaves aleatórias (Endereço Virtual de Pagamento - EVP) diferenciam letras 
 
 Nos testes foi observado que o itaú só aceita receber o pix se o identificador, valor e descrição existentes no qrcode forem os mesmos previamente cadastrados no sistema deles. Não foi encontrada nenhuma documentação pública a cerca de alguma API para efetuar esse cadastro.
 
+A medida de contorno para este problema é usar três asteriscos no campo identificador.
+
+```php
+<?php
+$px[62][05]="***";
+$pix=montaPix($px);
+$pix.="6304";
+$pix.=crcChecksum($pix);
+?>
+```
+
 ## Testes realizados
 
 Esta implementação foi testada, realizando a leitura do QRCode gerado, nos aplicativos dos seguintes bancos:
