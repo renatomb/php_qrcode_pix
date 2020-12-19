@@ -19,6 +19,7 @@ $px[00]="01"; //Payload Format Indicator, Obrigatório, valor fixo: 01
 //$px[01]="12"; //Se o valor 12 estiver presente, significa que o BR Code só pode ser utilizado uma vez. 
 $px[26][00]="BR.GOV.BCB.PIX"; //Indica arranjo específico; “00” (GUI) obrigatório e valor fixo: br.gov.bcb.pix
 $px[26][01]="42a57095-84f3-4a42-b9fb-d08935c86f47"; //Chave do destinatário do pix, pode ser EVP, e-mail, CPF ou CNPJ. Em caso de e-mails substituir o @ por espaço em branco.
+//$px[26][02]="Descricao"; // Descrição da transação, opcional.
 /*
 Outros exemplos de chaves:
 CNPJ:
