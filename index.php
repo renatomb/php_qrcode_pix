@@ -1,5 +1,5 @@
 <?php
-if (!isset($_POST["doacao"])) {
+if (!isset($_GET["doacao"])) {
    if (isset($_POST["chave"]) && isset($_POST["beneficiario"]) && isset($_POST["cidade"])) {
       $chave_pix=$_POST["chave"];
       $beneficiario_pix=$_POST["beneficiario"];
@@ -17,6 +17,12 @@ else {
    $cidade_pix="NATAL";
    $gerar_qrcode=true;
 }
+if (is_numeric($_POST["valor"])){
+   $valor_pix=preg_replace("/[^0-9.]/","",$_POST["valor"]);
+}
+else {
+   $valor_pix="0.00";
+}
 ?>
 
 <!doctype html>
@@ -29,13 +35,33 @@ else {
 <meta name="keywords" content="pix, qrcode pix, qr code, br code, brcode pix, pix copia e cola" />
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js" type="text/javascript"></script>
+<script src="https://kit.fontawesome.com/0f8eed42e7.js" crossorigin="anonymous"></script>
 <script>
 function copiar() {
   var copyText = document.getElementById("brcodepix");
   copyText.select();
   copyText.setSelectionRange(0, 99999); /* For mobile devices */
   document.execCommand("copy");
+  document.getElementById("clip_btn").innerHTML='<i class="fas fa-clipboard-check"></i>';
 }
+function reais(v){
+    v=v.replace(/\D/g,"");
+    v=v/100;
+    v=v.toFixed(2);
+    return v;
+}
+function mascara(o,f){
+    v_obj=o;
+    v_fun=f;
+    setTimeout("execmascara()",1);
+}
+function execmascara(){
+    v_obj.value=v_fun(v_obj.value);
+}
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})
 </script>
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-E6M96X7Y2Y"></script>
@@ -46,6 +72,10 @@ function copiar() {
 
   gtag('config', 'G-E6M96X7Y2Y');
 </script>
+<style>
+a {text-decoration: none;} 
+p {text-align: center;}
+</style>
 </head>
 <body>
 <?php
@@ -67,12 +97,7 @@ if ($gerar_qrcode){
    $px[26][01]=$chave_pix;
    $px[52]="0000"; //Merchant Category Code “0000” ou MCC ISO18245
    $px[53]="986"; //Moeda, “986” = BRL: real brasileiro - ISO4217
-   if (is_numeric($_POST["valor"])) {
-      $px[54]=$_POST["valor"];
-   }
-   else {
-      $px[54]="0.00";
-   }
+   $px[54]=$valor_pix;
    $px[58]="BR"; //“BR” – Código de país ISO3166-1 alpha 2
    $px[59]=$beneficiario_pix; //Nome do beneficiário/recebedor. Máximo: 25 caracteres.
    $px[60]=$cidade_pix; //Nome cidade onde é efetuada a transação. Máximo 15 caracteres.
@@ -84,43 +109,43 @@ if ($gerar_qrcode){
    $pix=montaPix($px);
    $pix.="6304"; //Adiciona o campo do CRC no fim da linha do pix.
    $pix.=crcChecksum($pix); //Calcula o checksum CRC16 e acrescenta ao final.
+   $linhas=round(strlen($pix)/120)+1;
    ?>
    <div class="card">
    <h3>Linha do Pix (copia e cola):</h3>
    <div class="row">
       <div class="col">
-      <textarea class="text-monospace" id="brcodepix" rows="4" cols="130"><?= $pix;?></textarea>
+      <textarea class="text-monospace" id="brcodepix" rows="<?= $linhas; ?>" cols="130" onclick="copiar()"><?= $pix;?></textarea>
       </div>
       <div class="col md-1">
-      <center>
-      <button type="button" class="btn-clipboard" title="" data-bs-original-title="Copiar código pix" onclick='copiar()'>Copiar</button>
-      </center>
+      <p><button type="button" id="clip_btn" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Copiar código pix" onclick="copiar()"><i class="fas fa-clipboard"></i></button></p>
       </div>
    </div>
    </div>
    <h3>Imagem de QRCode do Pix:</h3>
-   <center>
+   <p>
+   <img src="logo_pix.png"><br>
    <?php
    ob_start();
    QRCode::png($pix, null,'M',5);
    $imageString = base64_encode( ob_get_contents() );
    ob_end_clean();
    // Exibe a imagem diretamente no navegador codificada em base64.
-   echo '<img src="data:image/png;base64,' . $imageString . '"></center>';
+   echo '<img src="data:image/png;base64,' . $imageString . '"></p>';
 }
 ?>
 <h3>Gerador de QR Code do PIX</h3>
 <div class="card">
 <div class="card-body">
-<form method="post">
+<form method="post" action="index.php">
    <div class="row row-cols-lg-auto g-3 align-items-center">
       <label for="chave" class="form-label">Chave Pix:</label>
-      <input type="text" id="chave" name="chave" placeholder="Informe a chave pix" value="<?= $chave_pix;?>" size="50" maxlength="100" onclick="this.select();" required>
+      <input type="text" id="chave" name="chave" placeholder="Informe a chave pix" value="<?= $chave_pix;?>" size="50" maxlength="100" onclick="this.select();" data-toggle="tooltip" data-placement="right" title="Informe a chave pix de destino" required>
       <div id="chaveHelp" class="form-text">A chave pode ser: Aleatória (EVP), E-mail, Telefone, CPF ou CNPJ.</div>
    </div>
    <div class="row row-cols-lg-auto g-3 align-items-center">
       <label for="valor" class="form-label">Valor a pagar:</label>
-      <input type="number" id="valor" min="0.00" step="0.01" name="valor" placeholder="Informe o valor a cobrar" size="15" maxlength="13" value="<?= (is_numeric($_POST["valor"])?$_POST["valor"]:"0.00"); ?>" onclick="this.select();">
+      <input type="text" id="valor" name="valor" placeholder="Informe o valor a cobrar" size="15" maxlength="13" value="<?= $valor_pix; ?>" onclick="this.select();" onkeypress="mascara(this,reais)">
       <div id="valorHelp" class="form-text">Utilize o ponto "." como separador de decimais. Prencher 0 caso não deseje especificar um valor.</div>
    </div>
    <div class="row row-cols-lg-auto g-3 align-items-center">
@@ -133,21 +158,19 @@ if ($gerar_qrcode){
    </div>
    <div class="row row-cols-lg-auto g-3 align-items-center">
       <label for="descricao" class="form-label">Descrição da cobrança (opcional):</label>
-      <input type="text" id="descricao" name="descricao" placeholder="Descricao do pagamento" size="60" maxlength="100" value="<?= $_POST["descricao"];?>" value="<?= $_POST["descricao"];?>" onclick="this.select();">
+      <input type="text" id="descricao" name="descricao" placeholder="Descricao do pagamento" size="60" maxlength="99" value="<?= $_POST["descricao"];?>" value="<?= $_POST["descricao"];?>" onclick="this.select();">
    </div>
    <div class="row row-cols-lg-auto g-3 align-items-center">
       <label for="identificador" class="form-label">Identificador do pagamento (opcional):</label>
       <input type="text" id="identificador" name="identificador" placeholder="Identificador do pagamento" size="25" onclick="this.select();" value="<?= $_POST["identificador"];?>" >
       <div id="identificadorHelp" class="form-text">Se a conta destino for do Banco Itaú não utilize o identificador ou o pix poderá ser recusado.</div>
    </div>
-   <p align="center"><input type="submit" value="Gerar QR Code" class="btn btn-primary"></p>
-</form>
-<form method="POST">
-<p align="center"><input type="submit" value="Faça uma doação" name="doacao" value="y" class="btn btn-info"></p>
+   <p><button type="submit" class="btn btn-primary">Gerar QR Code <i class="fas fa-qrcode"></i></button>&nbsp;<a href="?doacao" class="btn btn-info">Ajude a manter este projeto <i class="fas fa-hand-holding-usd"></i></a>&nbsp;<a href="https://decoder.qrcodepix.tk" class="btn btn-info">Decodificador BR Code Pix <i class="fas fa-hammer"></i></a></p>
 </form>
 </div></div>
 <div class="card">
-<p align="center">Este é um projeto opensource criado em 2020 por <a href="http://renato.ovh">Renato Monteiro Batista</a> executado nos servidores da <a href="http://rmbinformatica.com">RMB Informática</a>, o código fonte está disponível no <a href="https://github.com/renatomb/php_qrcode_pix">Repositório php_qrcode_pix do Github</a>.</p>
+<p>Este é um projeto opensource criado em 2020 por <i class="fas fa-user-secret"></i> <a href="http://renato.ovh" target="_blank">Renato Monteiro Batista</a> executado nos servidores <i class="fas fa-server"></i> da <a href="http://rmbinformatica.com" target="_blank">RMB Informática</a>.</p>
+<p>O código fonte <i class="fas fa-code"></i> está disponível no <a href="https://github.com/renatomb/php_qrcode_pix" target="_blank">Repositório <i class="fab fa-git-square"></i> php_qrcode_pix <i class="fab fa-github"></i></a>.</p>
 </div>
 </body>
 </html>

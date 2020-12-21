@@ -8,7 +8,7 @@
 # Desenvolvido em 2020 por Renato Monteiro Batista - http://renato.ovh
 #
 # Este código pode ser copiado, modificado, redistribuído
-# inclusive comercialmente desde que mantidos a refereência ao autor.
+# inclusive comercialmente desde que mantida a refereência ao autor.
 */
 
 
