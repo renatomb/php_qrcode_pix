@@ -23,7 +23,7 @@ function montaPix($px){
    $ret="";
    foreach ($px as $k => $v) {
      if (!is_array($v)) {
-        if ($k == 54) { $v=number_format($v,2); } // Formata o campo valor com 2 digitos.
+        if ($k == 54) { $v=number_format($v,2,'.',''); } // Formata o campo valor com 2 digitos.
         $ret.=c2($k).cpm($v).$v;
      }
      else {
