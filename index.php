@@ -165,7 +165,7 @@ if ($gerar_qrcode){
       <input type="text" id="identificador" name="identificador" placeholder="Identificador do pagamento" size="25" onclick="this.select();" value="<?= $_POST["identificador"];?>" >
       <div id="identificadorHelp" class="form-text">Se a conta destino for do Banco Itaú não utilize o identificador ou o pix poderá ser recusado.</div>
    </div>
-   <p><button type="submit" class="btn btn-primary">Gerar QR Code <i class="fas fa-qrcode"></i></button>&nbsp;<a href="?doacao" class="btn btn-info">Ajude a manter este projeto <i class="fas fa-hand-holding-usd"></i></a>&nbsp;<a href="https://decoder.qrcodepix.tk" class="btn btn-info">Decodificador BR Code Pix <i class="fas fa-hammer"></i></a></p>
+   <p><button type="submit" class="btn btn-primary">Gerar QR Code <i class="fas fa-qrcode"></i></button>&nbsp;<a href="?doacao" class="btn btn-info">Ajude a manter este projeto <i class="fas fa-hand-holding-usd"></i></a>&nbsp;<a href="https://decoder.qrcodepix.dinheiro.tech" class="btn btn-info">Decodificador BR Code Pix <i class="fas fa-hammer"></i></a></p>
 </form>
 </div></div>
 <div class="card">

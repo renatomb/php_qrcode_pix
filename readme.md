@@ -2,6 +2,10 @@
 
 Este repositório contém o conjunto de código necessário à implementação do QRCode de recebimento de pagamentos do [PIX do Banco Central](https://www.bcb.gov.br/estabilidadefinanceira/pix) em PHP.
 
+## Versão live
+
+Estou disponibilizando a versão live deste repositório no site [Gerador de QR Code do pix](http://qrcodepix.dinheiro.tech), bem como do [Decodificador de BR Code do Pix](http://decoder.qrcodepix.dinheiro.tech) ambos para uso gratuito para fins de testes.
+
 ## Dependências
 
 Para a geração do QRCode foi usada a biblioteca [PHP QRCode](http://phpqrcode.sourceforge.net/). O conteúdo da biblioteca está no diretório `phpqrcode`.
@@ -97,7 +101,28 @@ No arquivo `exemplo.php` há um exemplo mais completo e com comentários a cerca
 
 As chaves aleatórias (Endereço Virtual de Pagamento - EVP) diferenciam letras maiúsculas de minúsculas.
 
+## Nota sobre o uso da descrição do pagamento (campo 26 02)
+
+A descrição do pagamento é exibida para o pagador no ato da confirmação do pix no aplicativo do cliente, nos bancos abaixo-relacionados essa informação consta no extrato da conta de quem recebeu o pix:
+
+* Nubank;
+
 ## Nota sobre o uso do identificador
+
+Nos bancos abaixo relacionados as informações preenchidas nos campos identificador e/ou descrição não constam no extrato da conta-corrente pessoa física:
+
+* Banco Inter;
+* Neon Pagamentos;
+* Sofisa Direto;
+* BS2;
+
+### Banco Inter
+
+As informações preenchidas nos campos identificador e descrição não constam no extrato de conta corrente nem extrato do pix das contas Pessoa Física.
+
+### Nubank
+
+O identificador usado não é exibido no extrato da NuConta. Para facilitar a identificação da transação utilize o campo descrição (campo 26 02).
 
 ### Itaú
 
@@ -114,11 +139,14 @@ $pix.=crcChecksum($pix);
 ?>
 ```
 
+Nota: Conforme informações que obtive para utilizar qr code gerado fora do aplicativo do itaú, é necessário entrar em contato com o gerente para que o mesmo realize a liberação da conta para uso de qrcoe de terceiros. Se não houver essa liberação o Itaú está recusando o recebimento do pix com base no identificador utilizado.
+
 ## Testes realizados
 
-Esta implementação foi testada, realizando a leitura do QRCode gerado, nos aplicativos dos seguintes bancos:
+Esta implementação foi testada, realizando a leitura do QRCode, Pix Copia-e-Cola, envio de Pix para outra instituição e Recebimento de pix de outra instituição, nos aplicativos dos seguintes bancos:
 
 * Banco Inter;
+* Itau;
 * Bradesco;
 * Sofisa direto;
 * NuBank;
@@ -129,7 +157,6 @@ Esta implementação foi testada, realizando a leitura do QRCode gerado, nos apl
 * Safra Wallet (AgZero);
 * BMG;
 * Sicredi;
-* Itau;
 * PagBank;
 * AgiBank;
 * Digio.
