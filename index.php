@@ -4,6 +4,12 @@ if (!isset($_GET["doacao"])) {
       $chave_pix=$_POST["chave"];
       $beneficiario_pix=$_POST["beneficiario"];
       $cidade_pix=$_POST["cidade"];
+      if ((!isset($_POST["identificador"])) || (empty($_POST["identificador"]))) {
+         $identificador="***";
+      }
+      else {
+         $identificador=$_POST["identificador"];
+      }
       $gerar_qrcode=true;
    }
    else {
@@ -15,6 +21,7 @@ else {
    $chave_pix="42a57095-84f3-4a42-b9fb-d08935c86f47";
    $beneficiario_pix="RENATO MONTEIRO BATISTA";
    $cidade_pix="NATAL";
+   $identificador="***";
    $gerar_qrcode=true;
 }
 if (is_numeric($_POST["valor"])){
@@ -102,7 +109,7 @@ if ($gerar_qrcode){
    $px[59]=$beneficiario_pix; //Nome do beneficiário/recebedor. Máximo: 25 caracteres.
    $px[60]=$cidade_pix; //Nome cidade onde é efetuada a transação. Máximo 15 caracteres.
    if (isset($_POST["identificador"]) && !empty($_POST["identificador"])){
-      $px[62][05]=$_POST["identificador"];
+      $px[62][05]=$identificador;
       $px[62][50][00]="BR.GOV.BCB.BRCODE"; //Payment system specific template - GUI
       $px[62][50][01]="1.0.0"; //Payment system specific template - versão
    }
@@ -161,9 +168,9 @@ if ($gerar_qrcode){
       <input type="text" id="descricao" name="descricao" placeholder="Descricao do pagamento" size="60" maxlength="99" value="<?= $_POST["descricao"];?>" value="<?= $_POST["descricao"];?>" onclick="this.select();">
    </div>
    <div class="row row-cols-lg-auto g-3 align-items-center">
-      <label for="identificador" class="form-label">Identificador do pagamento (opcional):</label>
-      <input type="text" id="identificador" name="identificador" placeholder="Identificador do pagamento" size="25" onclick="this.select();" value="<?= $_POST["identificador"];?>" >
-      <div id="identificadorHelp" class="form-text">Se a conta destino for do Banco Itaú não utilize o identificador ou o pix poderá ser recusado.</div>
+      <label for="identificador" class="form-label">Identificador do pagamento:</label>
+      <input type="text" id="identificador" name="identificador" placeholder="Identificador do pagamento" value="***" size="25" onclick="this.select();" value="<?= $_POST["identificador"];?>" >
+      <div id="identificadorHelp" class="form-text">Utilizar <b>***</b> para identificador gerado automaticamente.O Banco Itaú exige a autorização para uso de identificador que não tenha sido criado pelo aplicativo do próprio banco, <a href="https://github.com/bacen/pix-api/issues/214">saiba mais</a>.</div>
    </div>
    <p><button type="submit" class="btn btn-primary">Gerar QR Code <i class="fas fa-qrcode"></i></button>&nbsp;<a href="?doacao" class="btn btn-info">Ajude a manter este projeto <i class="fas fa-hand-holding-usd"></i></a>&nbsp;<a href="https://decoder.qrcodepix.dinheiro.tech" class="btn btn-info">Decodificador BR Code Pix <i class="fas fa-hammer"></i></a></p>
 </form>
