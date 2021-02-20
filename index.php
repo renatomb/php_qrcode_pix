@@ -4,6 +4,10 @@ if (!isset($_GET["doacao"])) {
       $chave_pix=$_POST["chave"];
       $beneficiario_pix=$_POST["beneficiario"];
       $cidade_pix=$_POST["cidade"];
+      if (isset($_POST["descricao"])){
+         $descricao=$_POST["descricao"];
+      }
+      else { $descricao=''; }
       if ((!isset($_POST["identificador"])) || (empty($_POST["identificador"]))) {
          $identificador="***";
       }
@@ -22,6 +26,7 @@ else {
    $beneficiario_pix="RENATO MONTEIRO BATISTA";
    $cidade_pix="NATAL";
    $identificador="***";
+   $descricao="Demo phpQRCodePix";
    $gerar_qrcode=true;
 }
 if (is_numeric($_POST["valor"])){
@@ -102,6 +107,9 @@ if ($gerar_qrcode){
    //$px[01]="12"; //Se o valor 12 estiver presente, significa que o BR Code só pode ser utilizado uma vez. 
    $px[26][00]="BR.GOV.BCB.PIX"; //Indica arranjo específico; “00” (GUI) obrigatório e valor fixo: br.gov.bcb.pix
    $px[26][01]=$chave_pix;
+   if (!empty($descricao)) {
+      $px[26][02]=$descricao;
+   }
    $px[52]="0000"; //Merchant Category Code “0000” ou MCC ISO18245
    $px[53]="986"; //Moeda, “986” = BRL: real brasileiro - ISO4217
    $px[54]=$valor_pix;
