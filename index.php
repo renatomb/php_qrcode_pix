@@ -108,11 +108,9 @@ if ($gerar_qrcode){
    $px[58]="BR"; //“BR” – Código de país ISO3166-1 alpha 2
    $px[59]=$beneficiario_pix; //Nome do beneficiário/recebedor. Máximo: 25 caracteres.
    $px[60]=$cidade_pix; //Nome cidade onde é efetuada a transação. Máximo 15 caracteres.
-   if (isset($_POST["identificador"]) && !empty($_POST["identificador"])){
-      $px[62][05]=$identificador;
-      $px[62][50][00]="BR.GOV.BCB.BRCODE"; //Payment system specific template - GUI
-      $px[62][50][01]="1.0.0"; //Payment system specific template - versão
-   }
+   $px[62][05]=$identificador;
+   $px[62][50][00]="BR.GOV.BCB.BRCODE"; //Payment system specific template - GUI
+   $px[62][50][01]="1.0.0"; //Payment system specific template - versão
    $pix=montaPix($px);
    $pix.="6304"; //Adiciona o campo do CRC no fim da linha do pix.
    $pix.=crcChecksum($pix); //Calcula o checksum CRC16 e acrescenta ao final.
