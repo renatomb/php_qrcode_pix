@@ -108,6 +108,10 @@ if ($gerar_qrcode){
    $px[26][00]="BR.GOV.BCB.PIX"; //Indica arranjo específico; “00” (GUI) obrigatório e valor fixo: br.gov.bcb.pix
    $px[26][01]=$chave_pix;
    if (!empty($descricao)) {
+      $tam_max_descr=99-(4+4+14+strlen($chave_pix));
+      if (strlen($descricao) > $tam_max_descr) {
+         $descricao=substr($descricao,0,$tam_max_descr);
+      }
       $px[26][02]=$descricao;
    }
    $px[52]="0000"; //Merchant Category Code “0000” ou MCC ISO18245
@@ -171,7 +175,7 @@ if ($gerar_qrcode){
    </div>
    <div class="row row-cols-lg-auto g-3 align-items-center">
       <label for="descricao" class="form-label">Descrição da cobrança (opcional):</label>
-      <input type="text" id="descricao" name="descricao" placeholder="Descricao do pagamento" size="60" maxlength="99" value="<?= $_POST["descricao"];?>" value="<?= $_POST["descricao"];?>" onclick="this.select();">
+      <input type="text" id="descricao" name="descricao" placeholder="Descricao do pagamento" size="60" maxlength="70" value="<?= $_POST["descricao"];?>" value="<?= $_POST["descricao"];?>" onclick="this.select();">
    </div>
    <div class="row row-cols-lg-auto g-3 align-items-center">
       <label for="identificador" class="form-label">Identificador do pagamento:</label>
