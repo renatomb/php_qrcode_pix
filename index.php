@@ -1,7 +1,7 @@
 <?php
 if (!isset($_GET["doacao"])) {
    if (isset($_POST["chave"]) && isset($_POST["beneficiario"]) && isset($_POST["cidade"])) {
-      $chave_pix=$_POST["chave"];
+      $chave_pix=strtolower($_POST["chave"]);
       $beneficiario_pix=$_POST["beneficiario"];
       $cidade_pix=$_POST["cidade"];
       if (isset($_POST["descricao"])){

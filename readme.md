@@ -107,7 +107,7 @@ Também estou disponibilizando uma versão live/demo no site [Gerador de QR Code
 
 ## Nota sobre o uso de chaves EVP
 
-As chaves aleatórias (Endereço Virtual de Pagamento - EVP) diferenciam letras maiúsculas de minúsculas.
+As chaves aleatórias (Endereço Virtual de Pagamento - EVP) devem ser informadas em letras minúsculas.
 
 ## Nota sobre o uso da descrição do pagamento (campo 26 02)
 
