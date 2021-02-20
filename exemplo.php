@@ -18,15 +18,21 @@ $px[00]="01"; //Payload Format Indicator, Obrigatório, valor fixo: 01
 // Se o QR Code for para pagamento único (só puder ser utilizado uma vez), descomente a linha a seguir.
 //$px[01]="12"; //Se o valor 12 estiver presente, significa que o BR Code só pode ser utilizado uma vez. 
 $px[26][00]="BR.GOV.BCB.PIX"; //Indica arranjo específico; “00” (GUI) obrigatório e valor fixo: br.gov.bcb.pix
-$px[26][01]="42a57095-84f3-4a42-b9fb-d08935c86f47"; //Chave do destinatário do pix, pode ser EVP, e-mail, CPF ou CNPJ. Em caso de e-mails substituir o @ por espaço em branco.
+$px[26][01]="42a57095-84f3-4a42-b9fb-d08935c86f47"; //Chave do destinatário do pix, pode ser EVP, e-mail, CPF ou CNPJ.
 //$px[26][02]="Descricao"; // Descrição da transação, opcional.
 /*
 Outros exemplos de chaves:
+CPF:
+$px[26][01]="12345678901"; // CPF somente numeros.
+
 CNPJ:
-$px[26][01]="05930393000156";
+$px[26][01]="05930393000156"; // CNPJ somente numeros.
 
 E-mail
-$px[26][01]="doe@r3n4t0.cyou"; //Em algumas implementações observei a substituição do @ por espaço em branco.
+$px[26][01]="doe@r3n4t0.cyou"; // Chave de e-mail, tamanho maximo 77. Chave, descricao e os IDs devem totalizar no máximo 99 caracteres no campo 26.
+
+Telefone:
+$px[26][01]="+5599888887777"; //Codificar o telefone no formato internacional, no exemplo: +55 Pais, 99 DDD, 888887777 telefone.
 */
 
 $px[52]="0000"; //Merchant Category Code “0000” ou MCC ISO18245
