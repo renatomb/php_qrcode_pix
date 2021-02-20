@@ -108,7 +108,7 @@ if ($gerar_qrcode){
    $px[26][00]="BR.GOV.BCB.PIX"; //Indica arranjo específico; “00” (GUI) obrigatório e valor fixo: br.gov.bcb.pix
    $px[26][01]=$chave_pix;
    if (!empty($descricao)) {
-      $tam_max_descr=99-(4+4+14+strlen($chave_pix));
+      $tam_max_descr=99-(4+4+4+14+strlen($chave_pix));
       if (strlen($descricao) > $tam_max_descr) {
          $descricao=substr($descricao,0,$tam_max_descr);
       }
