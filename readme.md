@@ -12,10 +12,12 @@ Para a geração do QRCode foi usada a biblioteca [PHP QRCode](http://phpqrcode.
 
 ## Introdução ao código do PIX
 
-Conforme o [manual de implementação do BR Code](https://www.bcb.gov.br/content/estabilidadefinanceira/SiteAssets/Manual%20do%20BR%20Code.pdf) o Pix adota a representação de dados estruturados de pagamento proposta no padrão
-EMV®1.
+Conforme o [manual de implementação do BR Code](https://www.bcb.gov.br/content/estabilidadefinanceira/SiteAssets/Manual%20do%20BR%20Code.pdf) o Pix adota a representação de dados estruturados de pagamento proposta no padrão EMV®1.
 
-Recomendo a leitura do manual em questão para obter informações adicionais da implementação.
+Recomendo a leitura do manual em questão para obter informações iniciais sobre a implementação.
+
+Para se aprofundar nos detalhes técnicos ou se quiser informações sobre os QR Codes dinâmicos também
+recomendo a leitura do [Manual de Padrões para Iniciação do Pix](https://www.bcb.gov.br/content/estabilidadefinanceira/pix/Regulamento_Pix/II-ManualdePadroesparaIniciacaodoPix.pdf).
 
 O pagamento através do pix pode ser feito de forma manual com a digitação dos dados do recebedor ou de maneira automatizada onde o recebedor disponibiliza uma requisição de pagamento que será lida pela instituição do pagador. Essa requisição de pagamentyo pode ser em formato texto, que foi denominado Pix Copia e Cola, ou através de um QRCode contendo o mesmo texto do Pix Copia e Cola.
 
@@ -46,6 +48,10 @@ No código `5802BR` temos:
 * `BR` Conteúdo do campo é BR, que é o código do país Brasil conforme  ISO3166-1 alpha 2.
 
 Um pix copia e cola contendo os somente os campos acima ficaria `00020053039865802BR`, não há qualquer espaço ou outro caractere separando os campos pois o tamanho de cada campo já está especificado logo após o ID, sendo possível fazer o processamento.
+
+Para facilitar a visualização de um código EMV a partir de qualquer Pix Copia-e-Cola, estou disponibilizando
+também o [Decodificador do Pix Copia-e-Cola](http://decoder.qrcodepix.dinheiro.tech/) cujo código fonte está
+no repositório [decoder_brcode_pix](https://github.com/renatomb/decoder_brcode_pix).
 
 ### Especificades do BR Code
 
@@ -97,6 +103,8 @@ Após gerada a linha do pix copia e cola ela pode ser encaminhada para o pagador
 
 No arquivo `exemplo.php` há um exemplo mais completo e com comentários a cerca de alguns dos campos possíveis. Para informações mais completas dos campos consulte a documentação oficial do [Bacen](https://bcb.gov.br).
 
+Também estou disponibilizando uma versão live/demo no site [Gerador de QR Code do PIX](http://qrcodepix.dinheiro.tech/).
+
 ## Nota sobre o uso de chaves EVP
 
 As chaves aleatórias (Endereço Virtual de Pagamento - EVP) diferenciam letras maiúsculas de minúsculas.
@@ -107,60 +115,50 @@ A descrição do pagamento é exibida para o pagador no ato da confirmação do 
 
 * Nubank;
 
-## Nota sobre o uso do identificador
+## Nota sobre o uso do identificador de transação
 
-Nos bancos abaixo relacionados as informações preenchidas nos campos identificador e/ou descrição não constam no extrato da conta-corrente pessoa física:
-
-* Banco Inter;
-* Neon Pagamentos;
-* Sofisa Direto;
-* BS2;
-
-### Banco Inter
-
-As informações preenchidas nos campos identificador e descrição não constam no extrato de conta corrente nem extrato do pix das contas Pessoa Física.
+Conforme o manual [manual de implementação do BR Code](https://www.bcb.gov.br/content/estabilidadefinanceira/SiteAssets/Manual%20do%20BR%20Code.pdf), pg 5, nota de rodapé, temos: "Conclui-se que, se o gerador do QR optar por não utilizar um  transactionID, o valor `***` deverá ser usado para indicar essa escolha.
 
 ### Nubank
 
-O identificador usado não é exibido no extrato da NuConta. Para facilitar a identificação da transação utilize o campo descrição (campo 26 02).
+O identificador usado não é exibido no extrato da NuConta. A descrição da transação (campo 26 02) é facilmente
+identificável no aplicativo.
 
 ### Itaú
 
-Nos testes foi observado que o itaú só aceita receber o pix se o identificador, valor e descrição existentes no qrcode forem os mesmos previamente cadastrados no sistema deles. Não foi encontrada nenhuma documentação pública a cerca de alguma API para efetuar esse cadastro.
-
-A medida de contorno para este problema é usar três asteriscos no campo identificador.
-
-```php
-<?php
-$px[62][05]="***";
-$pix=montaPix($px);
-$pix.="6304";
-$pix.=crcChecksum($pix);
-?>
-```
-
-Nota: Conforme informações que obtive para utilizar qr code gerado fora do aplicativo do itaú, é necessário entrar em contato com o gerente para que o mesmo realize a liberação da conta para uso de qrcoe de terceiros. Se não houver essa liberação o Itaú está recusando o recebimento do pix com base no identificador utilizado.
+Itaú recusa o pix de qualquer identificador de transação que não tenha sido gerado previamente no aplicativo deles. Conforme [informações que obtive](https://github.com/bacen/pix-api/issues/214) para utilizar qr code gerado fora do aplicativo do itaú, é necessário entrar em contato com o gerente para que o mesmo realize a liberação da conta para uso de qrcoe de terceiros. Se não houver essa liberação o Itaú está recusando o recebimento do pix com base no identificador utilizado.
 
 ## Testes realizados
 
 Esta implementação foi testada, realizando a leitura do QRCode, Pix Copia-e-Cola, envio de Pix para outra instituição e Recebimento de pix de outra instituição, nos aplicativos dos seguintes bancos:
 
-* Banco Inter;
+* [Banco Inter](https://www.bancointer.com.br/convite-abrir-conta/?c=cElVNw2WQb);
+* [Sofisa direto](https://sd.sofisadireto.com.br/MGM/IndiqueEGanhe/?codigo=RMB0283599);
+* [NuBank](https://nubank.com.br/indicacao/nu/?id=_WBz8C2qwOcAAAF3o3bmBg&msg=cb40c&utm_channel=social&utm_medium=referral&utm_source=mgm);
+* [C6 Bank](https://c6bank.onelink.me/fSbV/c6indica);
+* [AgZero / Safra Wallet](https://banco.dinheiro.tech/bancos-nacionais:agzero);
+* [BMG](https://banco.dinheiro.tech/bancos-nacionais:bmg);
+* [PagBank](https://indicapagbank.page.link/EfW5F);
+* [Digio](https://digio.com.br/convite/?id=3c387eb1&utm_source=mgm&utm_medium=convite&utm_campaign=cartao-credito-indica);
+* [MercadoPago](http://mpago.li/1JxaWKH);
 * Itau;
 * Bradesco;
-* Sofisa direto;
-* NuBank;
 * BS2;
-* C6;
 * Banco do Brasil;
 * Santander;
-* Safra Wallet (AgZero);
-* BMG;
 * Sicredi;
-* PagBank;
 * AgiBank;
-* Digio.
+* GerenciaNet;
 
 ## Autor
 
-Desenvolvido em 2020 por [Renato Monteiro Batista](https://renato.ovh).
+Desenvolvido em 2020/2021 por [Renato Monteiro Batista](https://renato.ovh).
+
+## Agradecimentos
+
+Agradeço inicialmente a todos aqueles que puderem contribuir com o projeto mandando um pix. :)
+
+* Ao Banco Santander por ser a implementação mais tranquila do pix.
+* Agradecimento ao [Rodrigo Fleury](https://github.com/rfbastos) por identificar a questão do identificador de transação com o Banco Itaú.
+* A Micro Reis Informática pelos testes do GerenciaNet.
+* Ao Banco itaú por ser a implementação mais implicante do pix.

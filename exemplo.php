@@ -4,7 +4,7 @@ Linha do Pix (copia e cola):
 /*
 # Exemplo de uso do php_qrcode_pix com descrição dos campos
 #
-# Desenvolvido em 2020 por Renato Monteiro Batista - http://renato.ovh
+# Desenvolvido em 2020-2021 por Renato Monteiro Batista - http://renato.ovh
 #
 # Este código pode ser copiado, modificado, redistribuído
 # inclusive comercialmente desde que mantidos a refereência ao autor.
@@ -35,9 +35,39 @@ $px[54]="10.00"; //Valor da transação, se comentado o cliente especifica o val
 $px[58]="BR"; //“BR” – Código de país ISO3166-1 alpha 2
 $px[59]="RENATO MONTEIRO BATISTA"; //Nome do beneficiário/recebedor. Máximo: 25 caracteres.
 $px[60]="NATAL"; //Nome cidade onde é efetuada a transação. Máximo 15 caracteres.
+$px[62][05]="***"; //Identificador de transação, quando gerado automaticamente usar ***. Vide nota abaixo.
+
 /*
-O campo 62 é um campo facultativo, que permite especificar um identificador da transação.
-$px[62][05]="phpqrcodepix"; //Campo facultativo. Identificador da transação.
+NOTA Sobre o 62/05, identificador de transação:
+Notei que logo do lançamento do pix os aplicativos não estavam implicando com esse campo e até mesmo 
+os BRCodes gerados em aplicativos de alguns bancos não apresentavam esse campo.
+Porém recentemente identifiquei que algumas instituições já não estão processando os pix na ausência
+desse campo. Trtaado na issue https://github.com/renatomb/php_qrcode_pix/issues/2
+
+Conforme o manual https://www.bcb.gov.br/content/estabilidadefinanceira/pix/Regulamento_Pix/II-ManualdePadroesparaIniciacaodoPix.pdf
+na página 5, nota de rodapé, temos: "Conclui-se que, se o gerador do QR optar por não utilizar um 
+transactionID, o valor ‘***’ deverá ser usado para indicar essa escolha." Diante disso estou atribuindo como
+sugestão neste exemplo, linha 38, o uso de *** no 6205.
+
+O conteúdo desse campo é gerado pelo recebedor do pix. Devendo ser um valor único para cada transação, ou ***
+quando não for usado pois esse passa a ser gerado automaticamente. Dada a necessidade de identificador único,
+caso haja a opção pelo uso do mesmo recomendo a utilização de um UUID vinculado ao sistema do recebedor, o que
+permitirá a conciliação dos pagamentos que foram recebidos.
+
+Entretanto, conforme discutido na issue https://github.com/bacen/pix-api/issues/214 o Banco Itaú bloqueia
+qualquer código de transação que não tenha sido gerado previamente no aplicativo da instituição. Necessário
+solicitar ao gerente da conta a liberação para que a conta do recebedor possa gerar qrcode do pix fora do
+aplicativo do banco. É possível que outras instituições passem a adotar esse posicionamento no futuro e até
+mesmo venham a cobrar por isso.
+
+Com o uso de QR Code dinâmicos é possível inclusive definir um webHook onde o cliente final seja notificado
+automaticamente quando determinada transação for recebida. Mas para isso consulte os detalhes da API da sua
+instituição.
+
+*/
+
+/*
+O campo 62/50 é um campo facultativo, que indica a versão do arranjo de pagamentos que está sendo usada.
 $px[62][50][00]="BR.GOV.BCB.BRCODE"; //Payment system specific template - GUI
 $px[62][50][01]="1.0.0"; //Payment system specific template - versão
 */
