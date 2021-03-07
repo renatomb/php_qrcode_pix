@@ -40,7 +40,17 @@ function cpm($tx){
     #
     # Autor: Renato Monteiro Batista
     */
-   return c2(strlen($tx));
+    if (strlen($tx) > 99) {
+      die("Tamanho máximo deve ser 99, inválido: $tx possui " . strlen($tx) . " caracteres.");
+    }
+    /*
+    Não aprecio o uso de die no código, é um tanto deselegante pois envolve matar.
+    Mas considerando que 99 realmente é o tamanho máximo aceitável, estou adotando-o.
+    Mas aconselho que essa verificação seja feita em outras etapas do código.
+    Caso não tenha entendido a problemática consulte  a página 4 do Manual de Padrões para Iniciação do Pix.
+    Ou a issue 4 deste projeto: https://github.com/renatomb/php_qrcode_pix/issues/4
+    */
+    return c2(strlen($tx));
 }
  
 function c2($input){
