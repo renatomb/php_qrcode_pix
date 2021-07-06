@@ -91,6 +91,8 @@ function crcChecksum($str) {
    $hex = $crc & 0xFFFF;
    $hex = dechex($hex);
    $hex = strtoupper($hex);
+   $hex = str_pad($hex, 4, '0', STR_PAD_LEFT);
+
    return $hex;
 }
 
