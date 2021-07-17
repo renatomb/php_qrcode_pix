@@ -39,11 +39,11 @@ function remove_char_especiais($txt){
    /*
    # Esta função retorna somente os caracteres alfanuméricos (a-z,A-Z,0-9) de uma string.
    # Caracteres acentuados são convertidos pelos equivalentes sem acentos.
-   # Emojis são removidos.
+   # Emojis são removidos, mantém espaços em branco.
    #
    # Autor: Eng. Renato Monteiro Batista
    */
-   return preg_replace('/\W/','',remove_acentos($txt));
+   return preg_replace('/\W /','',remove_acentos($txt));
 }
 
 function remove_acentos($texto){
