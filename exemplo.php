@@ -41,7 +41,7 @@ $px[54]="10.00"; //Valor da transação, se comentado o cliente especifica o val
 $px[58]="BR"; //“BR” – Código de país ISO3166-1 alpha 2
 $px[59]="RENATO MONTEIRO BATISTA"; //Nome do beneficiário/recebedor. Máximo: 25 caracteres.
 $px[60]="NATAL"; //Nome cidade onde é efetuada a transação. Máximo 15 caracteres.
-$px[62][05]="***"; //Identificador de transação, quando gerado automaticamente usar ***. Vide nota abaixo.
+$px[62][05]="***"; //Identificador de transação, quando gerado automaticamente usar ***. Limite 25 caracteres. Vide nota abaixo.
 
 /*
 NOTA Sobre o 62/05, identificador de transação:
@@ -50,10 +50,9 @@ os BRCodes gerados em aplicativos de alguns bancos não apresentavam esse campo.
 Porém recentemente identifiquei que algumas instituições já não estão processando os pix na ausência
 desse campo. Trtaado na issue https://github.com/renatomb/php_qrcode_pix/issues/2
 
-Conforme o manual https://www.bcb.gov.br/content/estabilidadefinanceira/pix/Regulamento_Pix/II-ManualdePadroesparaIniciacaodoPix.pdf
-na página 5, nota de rodapé, temos: "Conclui-se que, se o gerador do QR optar por não utilizar um 
-transactionID, o valor ‘***’ deverá ser usado para indicar essa escolha." Diante disso estou atribuindo como
-sugestão neste exemplo, linha 38, o uso de *** no 6205.
+Conforme o Manual de Padrões para Iniciação do Pix ver 2.2 na página 5, nota de rodapé, temos: "Conclui-se 
+que, se o gerador do QR optar por não utilizar um  transactionID, o valor ‘***’ deverá ser usado para indicar
+essa escolha." Diante disso estou atribuindo como sugestão neste exemplo, linha 38, o uso de *** no 6205.
 
 O conteúdo desse campo é gerado pelo recebedor do pix. Devendo ser um valor único para cada transação, ou ***
 quando não for usado pois esse passa a ser gerado automaticamente. Dada a necessidade de identificador único,
