@@ -203,7 +203,7 @@ if ($gerar_qrcode){
 </div></div>
 <div class="card">
 <p>Este é um projeto opensource criado em 2020 por <i class="fas fa-user-secret"></i> <a href="http://renato.ovh" target="_blank">Renato Monteiro Batista</a> executado nos servidores <i class="fas fa-server"></i> da <a href="http://rmbinformatica.com" target="_blank">RMB Informática</a>.</p>
-<p>O código fonte <i class="fas fa-code"></i> está disponível no <a href="https://github.com/renatomb/php_qrcode_pix" target="_blank">Repositório <i class="fab fa-git-square"></i> php_qrcode_pix <i class="fab fa-github"></i></a>.</p>
+<p>O código fonte <i class="fas fa-code"></i> está disponível no <a href="https://github.com/renatomb/php_qrcode_pix" target="_blank">Repositório <i class="fab fa-git-square"></i> php_qrcode_pix <i class="fab fa-github"></i></a>. Versão Demo 1.0.2.</p>
 </div>
 </body>
 </html>
