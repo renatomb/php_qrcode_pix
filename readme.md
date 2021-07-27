@@ -2,9 +2,11 @@
 
 Este repositório contém o conjunto de código necessário à implementação do QRCode de recebimento de pagamentos do [PIX do Banco Central](https://www.bcb.gov.br/estabilidadefinanceira/pix) em PHP.
 
-## Versão live
+## Versão live demo
 
 Estou disponibilizando a versão live deste repositório no site [Gerador de QR Code do pix](http://qrcodepix.dinheiro.tech), bem como do [Decodificador de BR Code do Pix](http://decoder.qrcodepix.dinheiro.tech) ambos para uso gratuito para fins de testes.
+
+Não utilizem a versão demo em ambiente de produção pois esse não é o propósito dela. Algumas modificações recentes na formação do código pix já causaram mal funcionamento na demo até o momento que fui capaz de identificar o problema.
 
 ## Dependências
 
@@ -12,12 +14,12 @@ Para a geração do QRCode foi usada a biblioteca [PHP QRCode](http://phpqrcode.
 
 ## Introdução ao código do PIX
 
-Conforme o [manual de implementação do BR Code](https://www.bcb.gov.br/content/estabilidadefinanceira/SiteAssets/Manual%20do%20BR%20Code.pdf) o Pix adota a representação de dados estruturados de pagamento proposta no padrão EMV®1.
+Conforme o [manual de implementação do BR Code](doc/ManualDoBRCode.pdf) o Pix adota a representação de dados estruturados de pagamento proposta no padrão EMV®1.
 
 Recomendo a leitura do manual em questão para obter informações iniciais sobre a implementação.
 
 Para se aprofundar nos detalhes técnicos ou se quiser informações sobre os QR Codes dinâmicos também
-recomendo a leitura do [Manual de Padrões para Iniciação do Pix](https://www.bcb.gov.br/content/estabilidadefinanceira/pix/Regulamento_Pix/II-ManualdePadroesparaIniciacaodoPix.pdf).
+recomendo a leitura do [Manual de Padrões para Iniciação do Pix](doc/ManualDePadroesParaIniciacaoDoPix.pdf).
 
 O pagamento através do pix pode ser feito de forma manual com a digitação dos dados do recebedor ou de maneira automatizada onde o recebedor disponibiliza uma requisição de pagamento que será lida pela instituição do pagador. Essa requisição de pagamentyo pode ser em formato texto, que foi denominado Pix Copia e Cola, ou através de um QRCode contendo o mesmo texto do Pix Copia e Cola.
 
@@ -117,7 +119,7 @@ A descrição do pagamento é exibida para o pagador no ato da confirmação do 
 
 ## Nota sobre o uso do identificador de transação
 
-Conforme o manual [manual de implementação do BR Code](https://www.bcb.gov.br/content/estabilidadefinanceira/SiteAssets/Manual%20do%20BR%20Code.pdf), pg 5, nota de rodapé, temos: "Conclui-se que, se o gerador do QR optar por não utilizar um  transactionID, o valor `***` deverá ser usado para indicar essa escolha.
+Conforme o manual [manual de implementação do BR Code](doc/ManualDoBRCode.pdf), pg 5, nota de rodapé, temos: "Conclui-se que, se o gerador do QR optar por não utilizar um  transactionID, o valor `***` deverá ser usado para indicar essa escolha.
 
 ### Nubank
 
@@ -158,7 +160,33 @@ Desenvolvido em 2020/2021 por [Renato Monteiro Batista](https://renato.ovh).
 
 Agradeço inicialmente a todos aqueles que puderem contribuir com o projeto mandando um pix. :)
 
-* Ao Banco Santander por ser a implementação mais tranquila do pix.
+* A todos que doaram um pix para incentivar na continuidade deste projeto.
+* Ao Banco Santander por ter a melhor implementação do pix na minha opinião.
 * Agradecimento ao [Rodrigo Fleury](https://github.com/rfbastos) por identificar a questão do identificador de transação com o Banco Itaú.
 * A Micro Reis Informática pelos testes do GerenciaNet.
 * Ao Banco itaú por ser a implementação mais implicante do pix.
+* A todos que de alguma forma colaboraram para esse projeto.
+
+## Disclaimer
+
+Este é um projeto hobby, feito em caráter voluntário, a fim de oferecer um norte inicial a quem quiser implementar recebimentos por pix. Não tenho vínculo com o BACEN nem com nenhuma instituição financeira.
+
+Procurei explicar todo meu entendimento, até o momento, na forma de comentários no código mas sem a pretensão de esgotar o assunto. Caso você identifique que algo mudou o que eu apresentei algum conceito de forma erronea me coloco a disposição para fazer os ajustes necessários, basta me contactar via [telegram](http://t.me/r3n4t0).
+
+## Documentação oficial
+
+Em virtude do fato do BACEN ter optado por retirar do ar / mudar a url das documentações que eu havia referenciado anteriormente. Estou optando por anexar tais arquivos a esse projeto na pastas `doc` a documentação oficial sobre o pix que tive acesso. Caso vocë tenha acesso a alguma outra documentação relevante que possa ser anexada a este projeto favor fazer um pull request.
+
+Recomendo a todos a leitura de toda a documentação anexada a fim de esclarecer algumas dúvidas iniciais. Esse projeto se propõe a oferecer uma camada entre os dados do recebedor criando o código bruto de um Pix-Copia-e-Cola (BRCode) e a geração da imagem do QR Code, mas se determinados requisitos mínimos não forem seguidos é possível que o código gerado não seja aceito nos aplicativos das instituições financeiras.
+
+* [manual de implementação do BR Code ver 1.0.0](doc/ManualDoBRCode.pdf)
+* [Manual de Padrões para Iniciação do Pix ver 2.2](doc/ManualDePadroesParaIniciacaoDoPix.pdf)
+* [Especificações técnicas e de negócio do ecossistema de pagamentos instantâneos brasileiro, Anexo I – Padrões para Iniciação do PIX ver 1.2.006](doc/PadroesParaIniciacaoDoPIX.pdf)
+
+## Onde obter ajuda
+
+Para ajuda sobre alguma implementação específica, recomendo iniciar o contato inicialmente com a sua instituição financeira pois a maioria delas já possuem soluções prontas para a maioria das implementações.
+
+Dúvidas sobre a api do pix consulte os [Repositórios do BACEN no github](https://github.com/bacen) e verifique os canais oficiais de ajuda.
+
+Outros questinamentos a cerca do meu código ou sugestões de melhoria pode entrar em contato diretamente comigo através de uma [issue](https://github.com/renatomb/php_qrcode_pix/issues) ou do [telegram](http://t.me/r3n4t0).
