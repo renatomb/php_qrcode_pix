@@ -4,7 +4,7 @@ Este repositório contém o conjunto de código necessário à implementação d
 
 ## Versão live demo
 
-Estou disponibilizando a versão live deste repositório no site [Gerador de QR Code do pix](http://qrcodepix.dinheiro.tech), bem como do [Decodificador de BR Code do Pix](http://decoder.qrcodepix.dinheiro.tech) ambos para uso gratuito para fins de testes.
+Estou disponibilizando a versão live deste repositório no site [Gerador de QR Code do pix](http://qrcodepix.dinheiro.tech), bem como do [Decodificador de BR Code do Pix](https://decoderpix.dinheiro.tech/) ambos para uso gratuito para fins de testes.
 
 Não utilizem a versão demo em ambiente de produção pois esse não é o propósito dela. Algumas modificações recentes na formação do código pix já causaram mal funcionamento na demo até o momento que fui capaz de identificar o problema.
 
@@ -52,7 +52,7 @@ No código `5802BR` temos:
 Um pix copia e cola contendo os somente os campos acima ficaria `00020053039865802BR`, não há qualquer espaço ou outro caractere separando os campos pois o tamanho de cada campo já está especificado logo após o ID, sendo possível fazer o processamento.
 
 Para facilitar a visualização de um código EMV a partir de qualquer Pix Copia-e-Cola, estou disponibilizando
-também o [Decodificador do Pix Copia-e-Cola](http://decoder.qrcodepix.dinheiro.tech/) cujo código fonte está
+também o [Decodificador do Pix Copia-e-Cola](https://decoderpix.dinheiro.tech/) cujo código fonte está
 no repositório [decoder_brcode_pix](https://github.com/renatomb/decoder_brcode_pix).
 
 ### Especificades do BR Code
