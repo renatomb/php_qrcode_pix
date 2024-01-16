@@ -1,4 +1,4 @@
-Linha do Pix (copia e cola):
+<h1 style="text-align:center;">PHP QRCODE PIX</h1>
 <PRE>
 <?php
 /*
@@ -89,10 +89,15 @@ $pix=montaPix($px);
 $pix.="6304"; //Adiciona o campo do CRC no fim da linha do pix.
 $pix.=crcChecksum($pix); //Calcula o checksum CRC16 e acrescenta ao final.
 
-echo $pix;
+echo '<h1 style="text-align:center;">Linha do Pix (copia e cola):</h1>';
+
+echo '<input style="width:70%; display:block;margin:auto; font-size:15px;" type="text" value="'.$pix.'" onClick="this.select();">';
+echo '<p style="text-align:center;font-size:12px;">'.$pix.'</p>';
+
 ?>
-</PRE><br>
-<center><h1>Imagem de QRCode do Pix</h1></center>
+</PRE>
+<hr>
+<h1 style="text-align:center;">Imagem de QRCode do Pix :</h1>
 <?
 
 /*
@@ -107,5 +112,6 @@ QRCode::png($pix, null,'M',5);
 $imageString = base64_encode( ob_get_contents() );
 ob_end_clean();
 // Exibe a imagem diretamente no navegador codificada em base64.
-echo '<img src="data:image/png;base64,' . $imageString . '"></center>';
+echo '<img src="data:image/png;base64,' . $imageString . '" style="display:block;margin:auto;"/>';
+
 ?>
