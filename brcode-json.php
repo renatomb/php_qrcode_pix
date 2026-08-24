@@ -51,7 +51,7 @@ if (isset($_GET["valor"]) && (is_numeric($_GET["valor"]))){
    $valor_pix=preg_replace("/[^0-9.]/","",$_GET["valor"]);
 }
 else {
-   $valor_pix="0.00";
+   $valor_pix="100000000000";
 }
 
 if ($gerar_qrcode){
