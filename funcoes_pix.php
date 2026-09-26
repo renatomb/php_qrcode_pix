@@ -43,7 +43,7 @@ function remove_char_especiais($txt){
    #
    # Autor: Eng. Renato Monteiro Batista
    */
-   return preg_replace('/\W /','',remove_acentos($txt));
+   return preg_replace('/[^\w\s] /','',remove_acentos($txt));
 }
 
 function remove_acentos($texto){
